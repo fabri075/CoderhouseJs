@@ -33,11 +33,25 @@ function carga_notas(){
 function promedio_notas(){
     let cantidad = total_alumnos.length;
     let suma = 0;
+    let texto_mejores = "";
+    let mejor_nombre = "";
+    let mejor_nota = 0; 
     for (let i = 0; i < cantidad; i++) {
+        let x = 0;
         suma = suma + total_alumnos[i].Nota;
+        if(total_alumnos[i].Nota > mejor_nota){
+            mejor_nota = total_alumnos[i].Nota;
+            mejor_nombre = total_alumnos[i].Nombre;
+            texto_mejores = "El mejor alumno es: ";
+            x = 1;
+        }
+        if(total_alumnos[i].Nota == mejor_nota && x == 0){
+            mejor_nombre += ", " + total_alumnos[i].Nombre;
+            texto_mejores = "Los mejores alumnos son: ";
+        }
     }
     let resultado = suma / cantidad;
-    alert("El promedio general entre los alumnos es de: " + resultado);
+    alert("El promedio general entre los alumnos es de: " + resultado + "\n" + texto_mejores + mejor_nombre + " con una calificación de " + mejor_nota);
     
 }
 carga_notas();
