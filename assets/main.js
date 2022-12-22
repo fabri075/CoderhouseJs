@@ -1,12 +1,23 @@
 
 let total_alumnos = new Array();
-function carga_notas(){
+//let button = document.getElementById("action_button");
+
+//Paso un parametro para saber si entra a la funcion por primera vez, o entra nuevamente luego de cargar por primera vez alumnos
+function carga_notas(entrada){
     let carga = 0;
     while(carga == 0){
         let nombre_alumno = prompt("Ingrese el nombre del alumno:");
     while((nombre_alumno == "" || nombre_alumno == null)){
+        //En caso de que se arrepienta de cargar nuevos alumnos ya habiendo cargado antes lo dejo volver al prompt de acciones
+        if(entrada == 0){
         alert("El nombre no puede estar vacio");
-        nombre_alumno = prompt("Ingrese el nombre del alumno:");    
+        nombre_alumno = prompt("Ingrese el nombre del alumno:");
+        }else{
+            carga++;
+            nombre_alumno == "Volver";
+            acciones_notas();
+            return false;
+        }    
     }
     if(nombre_alumno != ""){
         let nota_alumno = prompt("Ingrese la califación")
@@ -24,7 +35,7 @@ function carga_notas(){
             }
             if(pregunta == "2"){
                 carga++;
-                promedio_notas();
+                acciones_notas();
             }
         }
     }
@@ -51,7 +62,63 @@ function promedio_notas(){
         }
     }
     let resultado = suma / cantidad;
+    resultado = (Math.round(resultado * 100) / 100).toFixed(2);
     alert("El promedio general entre los alumnos es de: " + resultado + "\n" + texto_mejores + mejor_nombre + " con una calificación de " + mejor_nota);
-    
+    acciones_notas();
 }
-carga_notas();
+
+function acciones_notas(){
+    let action_list = prompt("¿Qué desea hacer a continuación? \n 1- Cargar nuevos alumnos \n 2- Buscar alumnos \n 3- Promedio general \n 4- Finalizar");
+    while(action_list != "1" && action_list != "2" && action_list != "3" && action_list != "4"){
+        alert("Respuesta invalida");
+        action_list = prompt("¿Qué desea hacer a continuación? \n 1- Cargar nuevos alumnos \n 2- Buscar alumnos \n 3- Promedio general \n 4- Finalizar");
+    }
+    if(action_list == "1"){
+        carga_notas(1);
+    }else if(action_list == "2"){
+        buscador();
+    }else if(action_list == "3"){
+        promedio_notas();
+    }else {
+        return false;
+    }
+}
+
+function buscador(){
+    let busqueda = prompt("¿Cómo desea hacer la busqueda? \n 1- Alumnos \n 2- Notas \n 3- Cancelar");
+    while(busqueda != "1" && busqueda != "2" && busqueda != "3"){
+        alert("Respuesta invalida");
+        busqueda = prompt("¿Cómo desea hacer la busqueda? \n 1- Alumnos \n 2- Notas \n 3- Cancelar");
+    }
+    if(busqueda == "3"){
+        acciones_notas();
+    }else{
+        busca_alumnos(busqueda);
+    }
+}
+//Tipo 1 = busqueda por alumnos - Tipo 2 = Busqueda por notas
+function busca_alumnos(tipo){
+    let encontrados = "";
+    if(tipo == "1"){
+        let nombre = prompt("Escriba el nombre que desea buscar");
+        while (nombre == ""){
+            alert("Ingrese un nombre");
+            nombre = prompt("Escriba el nombre que desea buscar");
+        }
+        encontrados = total_alumnos.filter((user) => user.Nombre.includes(nombre));
+        let cantidad = encontrados.length;
+        let alumnos = "";
+        encontrados.forEach(element => {
+            alumnos = alumnos + element.Nombre + " - Nota: " + element.Nota + "\n";
+        });
+        alert("Se encontraron "+ cantidad + " alumno/s \n" + alumnos);
+    }else if(tipo == "2"){
+        let operacion = prompt("¿Que notas desea buscar? \n 1- Iguales a \n 2- Mayores a \n 3- Iguales a");
+        while(operacion != "1" && operacion != "2" && operacion != "3"){
+            alert("Respuesta invalida");
+            operacion = prompt("¿Que notas desea buscar? \n 1- Iguales a \n 2- Mayores a \n 3- Iguales a");
+        }
+    }
+}
+
+carga_notas(0);
