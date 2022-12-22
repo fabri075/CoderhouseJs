@@ -99,6 +99,8 @@ function buscador(){
 //Tipo 1 = busqueda por alumnos - Tipo 2 = Busqueda por notas
 function busca_alumnos(tipo){
     let encontrados = "";
+    let alumnos = "";
+    let cantidad = 0;
     if(tipo == "1"){
         let nombre = prompt("Escriba el nombre que desea buscar");
         while (nombre == ""){
@@ -106,19 +108,40 @@ function busca_alumnos(tipo){
             nombre = prompt("Escriba el nombre que desea buscar");
         }
         encontrados = total_alumnos.filter((user) => user.Nombre.includes(nombre));
-        let cantidad = encontrados.length;
-        let alumnos = "";
-        encontrados.forEach(element => {
-            alumnos = alumnos + element.Nombre + " - Nota: " + element.Nota + "\n";
-        });
-        alert("Se encontraron "+ cantidad + " alumno/s \n" + alumnos);
+        cantidad = encontrados.length;
     }else if(tipo == "2"){
-        let operacion = prompt("¿Que notas desea buscar? \n 1- Iguales a \n 2- Mayores a \n 3- Iguales a");
+        let operacion = prompt("¿Que notas desea buscar? \n 1- Iguales a \n 2- Mayores a \n 3- Menores a");
         while(operacion != "1" && operacion != "2" && operacion != "3"){
             alert("Respuesta invalida");
-            operacion = prompt("¿Que notas desea buscar? \n 1- Iguales a \n 2- Mayores a \n 3- Iguales a");
+            operacion = prompt("¿Que notas desea buscar? \n 1- Iguales a \n 2- Mayores a \n 3- Menores a");
         }
+        let nota_buscar = prompt("Ingrese la califación a buscar")
+        let nota_limpia = parseInt(nota_buscar);
+        while(nota_limpia < 0 || nota_limpia > 10 || isNaN(nota_limpia)){
+            alert("Ingrese un número entre el 1 y el 10");
+            nota_buscar = prompt("Ingrese la califación a buscar");
+            nota_limpia = parseInt(nota_buscar);
+        }
+        switch(operacion){
+            case "1":
+                encontrados = total_alumnos.filter((n) => n.Nota == nota_limpia);
+            break;
+            case "2": 
+                encontrados = total_alumnos.filter((n) => n.Nota > nota_limpia);
+            break;
+            case "3":
+                encontrados = total_alumnos.filter((n) => n.Nota < nota_limpia);
+            break;
+        }
+        cantidad = encontrados.length;
     }
+
+    encontrados.forEach(element => {
+        alumnos = alumnos + element.Nombre + " - Nota: " + element.Nota + "\n";
+    });
+    alert("Se encontraron "+ cantidad + " alumno/s \n" + alumnos);
+
+    acciones_notas();
 }
 
 carga_notas(0);
