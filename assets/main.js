@@ -37,6 +37,8 @@ function show_content(view){
     switch(view){
         case 1:
             div_add.classList.remove("hide");
+            students = new Array();
+            data = "";
             break;
         case 2:
             div_list.classList.remove("hide");
@@ -84,6 +86,7 @@ function save_student(view){
         table_add.innerHTML = "";
     }else if(view == 2){
         result = 'Los alumnos se han eliminado correctamente.';
+        charge_list();
     }
     Swal.fire({
         icon: 'success',
