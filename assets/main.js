@@ -74,7 +74,7 @@ function add_student(){
 
 function save_student(view){
     list = JSON.parse(localStorage.getItem("students"));
-    if(list != "" && view == 1){
+    if(list && view == 1){
         students = list.concat(students);
     }
     let datos = JSON.stringify(students);
@@ -131,14 +131,17 @@ function hide_buttons(){
 
 function charge_list(){
     list = JSON.parse(localStorage.getItem("students"));
-    if(list == ""){
-        btn_delete.classList.add("hide");
-    }else{
+    let cantidad = "";
+    if(list && list != ""){
         btn_delete.classList.remove("hide");
+        cantidad = list.length;
+    }else{
+        btn_delete.classList.add("hide");
+        cantidad = 0;
     }
     let tabla = "";
     let delete_id = "";
-    for(let i = 0; i < list.length; i++){
+    for(let i = 0; i < cantidad; i++){
         delete_id = "checkdelete_" + i;
         tabla += `<tr><td>${list[i].name}</td><td>${list[i].quote}</td><td class="text-center"><input class="form-check-input select" type="checkbox" id="${delete_id}"></td></tr>`;
     }
@@ -147,6 +150,7 @@ function charge_list(){
 
 function general_average(){
     list = JSON.parse(localStorage.getItem("students"));
+    if(list && list != ""){
     let cantidad = list.length;
     let suma = 0;
     let texto_mejores = "";
@@ -172,4 +176,13 @@ function general_average(){
     text_average.innerHTML = "Promedio General: " + resultado;
     best_quote.innerHTML = "Calificación más alta: " + mejor_nota;
     best_student.innerHTML = texto_mejores + mejor_nombre;
+}else{
+    div_average.classList.add("hide");
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se ha cargado ningun alumno',
+      })
+      return false;
+}
 }
