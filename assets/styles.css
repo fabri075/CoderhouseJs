@@ -29,15 +29,6 @@ section {
   
 .allback {
     background-color: #3c3c3ced;
-    opacity: 0.75;
-    /* padding-top: 2em;
-    padding-bottom: 2em;
-    display: flex;
-    max-width: 80vw;
-    flex-direction: row;
-    justify-content: space-evenly;
-    width: 100%; 
-    color: white; */
 }
 
 .allback h2{
@@ -46,9 +37,20 @@ section {
 }
 
 .hide{
-    display: none;
+    display: none !important;
 }
 
 .input-group-text{
     height: 100%;
+}
+
+#div_list_student tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+
+#div_average_student h4{
+    color: white;
+    margin-top: 2rem;
+    text-decoration: underline;
 }
