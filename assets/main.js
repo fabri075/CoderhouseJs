@@ -91,6 +91,9 @@ function save_student(view){
         text: result,
     })
     list = JSON.parse(localStorage.getItem("students"));
+    if(list == ""){
+        btn_delete.classList.add("hide");
+    }
 }
 
 function delete_student(){
@@ -128,6 +131,11 @@ function hide_buttons(){
 
 function charge_list(){
     list = JSON.parse(localStorage.getItem("students"));
+    if(list == ""){
+        btn_delete.classList.add("hide");
+    }else{
+        btn_delete.classList.remove("hide");
+    }
     let tabla = "";
     let delete_id = "";
     for(let i = 0; i < list.length; i++){
