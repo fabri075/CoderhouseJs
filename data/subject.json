@@ -1,0 +1,40 @@
+{
+    "Subjects": [
+             {
+                "id": 0,
+                "name": "Matemática",
+                "dataBase": "json",
+                "status": 1
+             },
+             {
+                "id": 1,
+                "name": "Biología",
+                "dataBase": "json",
+                "status": 1
+             },
+             {
+                "id": 2,
+                "name": "Química",
+                "dataBase": "json",
+                "status": 1
+             },
+             {
+                "id": 3,
+                "name": "Física",
+                "dataBase": "json",
+                "status": 1
+             },
+             {
+                "id": 4,
+                "name": "Lengua",
+                "dataBase": "json",
+                "status": 1
+             },
+             {
+                "id": 5,
+                "name": "Historia",
+                "dataBase": "json",
+                "status": 1
+             }
+    ]
+ }

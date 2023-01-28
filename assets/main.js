@@ -9,14 +9,17 @@ let btn_add = document.getElementById("add_student");
 let btn_save = document.getElementById("save_student");
 let btn_delete = document.getElementById("delete_student");
 let input_quote = document.getElementById("quote_student");
+let select_subject = document.getElementById("subject");
 let table_add = document.getElementById("table_add_students");
 let table_list = document.getElementById("table_list_students");
 let text_average = document.getElementById("general_average");
 let best_quote = document.getElementById("best_quote");
 let best_student = document.getElementById("best_student");
+let option = "";
 let data = "";
 let list = "";
 let students = new Array();
+let totalsubjects = new Array();
 
 //acciones de inputs y botones
 input_quote.addEventListener("focusout", check_quote);
@@ -38,6 +41,7 @@ function show_content(view){
         case 1:
             div_add.classList.remove("hide");
             students = new Array();
+            chargesubject();
             data = "";
             break;
         case 2:
@@ -57,7 +61,8 @@ function add_student(){
     let name = document.getElementById("name_student");
     let last_name = document.getElementById("last_name_student");
     let quote = document.getElementById("quote_student");
-    if(name.value == "" || last_name.value == "" || parseInt(quote.value) == 0){
+    let subject = document.getElementById("subject");
+    if(name.value == "" || last_name.value == "" || parseInt(quote.value) == 0 || subject.value == ""){
         Swal.fire({
             icon: 'warning',
             title: 'Error',
@@ -66,12 +71,13 @@ function add_student(){
           return false;
     }
     btn_save.classList.remove("hide");
-    data += `<tr><td>${name.value} ${last_name.value}</td><td>${quote.value}</td></tr>`;
+    data += `<tr><td>${name.value} ${last_name.value}</td><td>${subject.value}</td><td>${quote.value}</td></tr>`;
     table_add.innerHTML = data;
-    students.push({"name": name.value + " " + last_name.value, "quote": quote.value});
+    students.push({"name": name.value + " " + last_name.value, "subject": subject.value, "quote": quote.value});
     name.value = "";
     last_name.value = "";
-    quote.value = "";  
+    quote.value = "";
+    subject.value = "";  
 }
 
 function save_student(view){
@@ -107,7 +113,7 @@ function delete_student(){
         check_name = "checkdelete_" + i;
         check_id = document.getElementById(check_name);
         if(!check_id.checked){
-            students.push({"name": list[i].name, "quote": list[i].quote});  
+            students.push({"name": list[i].name, "subject": list[i].subject, "quote": list[i].quote});  
         }
     }
     save_student(2);
@@ -146,7 +152,7 @@ function charge_list(){
     let delete_id = "";
     for(let i = 0; i < cantidad; i++){
         delete_id = "checkdelete_" + i;
-        tabla += `<tr><td>${list[i].name}</td><td>${list[i].quote}</td><td class="text-center"><input class="form-check-input select" type="checkbox" id="${delete_id}"></td></tr>`;
+        tabla += `<tr><td>${list[i].name}</td><td>${list[i].subject}</td><td>${list[i].quote}</td><td class="text-center"><input class="form-check-input select" type="checkbox" id="${delete_id}"></td></tr>`;
     }
     table_list.innerHTML = tabla;
 }
@@ -188,4 +194,19 @@ function general_average(){
       })
       return false;
 }
+}
+
+//Cargo las materias del archivo JSON
+function chargesubject(){
+    fetch('./data/subject.json')
+    .then(data => data.json())
+    .then(sub => {
+        let db = sub.Subjects;
+        for(let i = 0; i < db.length; i++){
+            option = document.createElement('option');
+            option.value = db[i].name;
+            option.innerHTML = db[i].name;
+            select_subject.appendChild(option);
+        }
+    })
 }
