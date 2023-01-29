@@ -19,7 +19,19 @@ let option = "";
 let data = "";
 let list = "";
 let students = new Array();
-let totalsubjects = new Array();
+let subjectslist = "";
+
+//Elementos para generar la estadistica
+let n1 = 0;
+let n2 = 0;
+let n3 = 0;
+let n4 = 0;
+let n5 = 0;
+let n6 = 0;
+let n7 = 0;
+let n8 = 0;
+let n9 = 0;
+let n10 = 0;
 
 //acciones de inputs y botones
 input_quote.addEventListener("focusout", check_quote);
@@ -32,6 +44,7 @@ btn_average.addEventListener("click", () => show_content(3));
 
 //funciones de entrada
 hide_buttons();
+chargesubject();
 
 //funciones 
 
@@ -41,7 +54,6 @@ function show_content(view){
         case 1:
             div_add.classList.remove("hide");
             students = new Array();
-            chargesubject();
             data = "";
             break;
         case 2:
@@ -185,6 +197,15 @@ function general_average(){
     text_average.innerHTML = "Promedio General: " + resultado;
     best_quote.innerHTML = "Calificación más alta: " + mejor_nota;
     best_student.innerHTML = texto_mejores + mejor_nombre;
+    
+    Swal.fire({
+        html: '<div style="width: 5rem; height: 5rem;" class="spinner-border text-info" role="status"><span class="sr-only">Loading...</span></div><br><br><span>Generando gráfico, espere un segundo...</span>',
+        showCloseButton: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    });
+    setTimeout(graphicGenerate, 1500)
 }else{
     div_average.classList.add("hide");
     Swal.fire({
@@ -202,11 +223,102 @@ function chargesubject(){
     .then(data => data.json())
     .then(sub => {
         let db = sub.Subjects;
+        subjectslist = new Array();
         for(let i = 0; i < db.length; i++){
-            option = document.createElement('option');
-            option.value = db[i].name;
-            option.innerHTML = db[i].name;
-            select_subject.appendChild(option);
+            subjectslist.push({"subject": db[i].name}); 
         }
+        //Doy medio segundo para que el array se genere correctamente
+        setTimeout(push_select, 500)
     })
+}
+
+function push_select(){
+    select_subject.disabled = false;
+    for(let i = 0; i < subjectslist.length; i++){
+    option = document.createElement('option');
+    option.value = subjectslist[i].subject;
+    option.innerHTML = subjectslist[i].subject;
+    select_subject.appendChild(option);
+}
+}
+function graphicGenerate(){
+    Swal.close();
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart(){
+        list = JSON.parse(localStorage.getItem("students"));
+    let cantidad = list.length;
+    n1 = 0;
+    n2 = 0;
+    n3 = 0;
+    n4 = 0;
+    n5 = 0;
+    n6 = 0;
+    n7 = 0;
+    n8 = 0;
+    n9 = 0;
+    n10 = 0;
+    for (let i = 0; i < cantidad; i++) {
+        let nota = parseInt(list[i].quote);
+    switch(nota){
+        case 1:
+            n1++;
+            break;
+        case 2:
+            n2++;
+            break;
+        case 3:
+            n3++;
+            break;
+        case 4:
+            n4++;
+            break;
+        case 5:
+            n5++;
+            break;
+        case 6:
+            n6++;
+            break;
+        case 7:
+            n7++;
+            break;
+        case 8:
+            n8++;
+            break;
+        case 9:
+            n9++;
+            break;
+        case 10:
+            n10++;
+            break;
+        default:
+            break;
+    }
+    }
+    let data = new google.visualization.DataTable();
+    data.addColumn('string', 'Alumno');
+    data.addColumn('number', 'Nota');data.addRows([
+        
+        ['1', n1],
+        ['2', n2],
+        ['3', n3],
+        ['4', n4],
+        ['5', n5],
+        ['6', n6],
+        ['7', n7],
+        ['8', n8],
+        ['9', n9],
+        ['10', n10]
+      ]);
+      
+      let options = {
+      'title':'Estadistica general de notas',
+      'width':'80%',
+      'height':300,
+      backgroundColor: '#E4E4E4',
+      is3D: true };
+      
+      let chart = new google.visualization.PieChart(document.getElementById('chart'));
+      chart.draw(data, options);
+    }
 }

@@ -35,6 +35,24 @@
                 "name": "Historia",
                 "dataBase": "json",
                 "status": 1
+             },
+             {
+                "id": 6,
+                "name": "Ética",
+                "dataBase": "json",
+                "status": 1
+             },
+             {
+                "id": 7,
+                "name": "Geografía",
+                "dataBase": "json",
+                "status": 1
+             },
+             {
+                "id": 8,
+                "name": "Inglés",
+                "dataBase": "json",
+                "status": 1
              }
     ]
  }
