@@ -219,7 +219,7 @@ function general_average(){
 
 //Cargo las materias del archivo JSON
 function chargesubject(){
-    fetch('./data/subject.json')
+    fetch('./assets/subject.json')
     .then(data => data.json())
     .then(sub => {
         let db = sub.Subjects;
